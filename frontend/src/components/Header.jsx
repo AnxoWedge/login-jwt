@@ -1,3 +1,5 @@
+// Tanto o header como o footer São quase meramente "dumb" não tem state e apenas servem para estilos.
+
 import React, { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
@@ -21,7 +23,8 @@ const Header = ({ title }) => {
   const [token, setToken] = useContext(UserContext);
 
   const handleLogout = () => {
-    setToken(null);
+    setToken("null");
+    localStorage.removeItem("apiToken");
   };
 
   return (
@@ -44,11 +47,11 @@ const Header = ({ title }) => {
           </defs>
         </svg>
       <div className="button-box">
-        {token && (
+        {token==="null" ? "": (
           <button className="button action" onClick={handleLogout}>
             Logout
           </button>
-        )}
+          )}
       </div>
 
     </div>

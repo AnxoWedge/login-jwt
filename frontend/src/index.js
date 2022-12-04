@@ -1,3 +1,4 @@
+//inicializar APP com um state 
 import React from "react";
 import ReactDOM from "react-dom";
 import "bulma/css/bulma.min.css";

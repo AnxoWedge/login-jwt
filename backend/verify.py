@@ -1,3 +1,5 @@
+# Para a validação e a geração do hash foi utilizado as funções dadas em aula :)
+
 import hashlib, string, random
 
 # Verifica se hashSHA256(salt+passwd) é igual ao hash do argumento

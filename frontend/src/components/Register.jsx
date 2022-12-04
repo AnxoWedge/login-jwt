@@ -1,3 +1,5 @@
+//Página de registo
+
 import React, { useContext, useState } from "react";
 
 import { UserContext } from "../context/UserContext";
@@ -8,6 +10,7 @@ import "./../css/forms.css";
 
 
 const Register = () => {
+  // State com React Hooks para o processamento dos dados
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,20 +23,21 @@ const Register = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name, email: email, password: password }),
+      body: JSON.stringify({ name: name, email: email, password: password }), // tratamento do JSON para o backend 
     };
 
-    const response = await fetch("/api/register", requestOptions);
+    const response = await fetch("/api/register", requestOptions);// Envio dos dados para o back end 
     const data = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok) { // verificar se houve erro 
       setErrorMessage(data.detail);
       setErrorMessageColor(true)
     } else {
-      setToken(data.access_token);
+      setToken(data.access_token); // Receber token em caso de sucesso 
     }
   };
 
+  // Verificar se a password tem todos os requesitos
   const checkPassword = (pass) =>{
     let reg =  /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
     return reg.test(pass)
@@ -41,7 +45,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmationPassword && checkPassword(password)) {
+    if (password === confirmationPassword && checkPassword(password)) { // comfirmação e Submit
       submitRegistration();
     } else {
       setErrorMessage(

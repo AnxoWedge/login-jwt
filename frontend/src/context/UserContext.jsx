@@ -1,3 +1,6 @@
+// Este Ficheiro é para a autorização e verificação do token disponível para o utilizador. 
+// Caso o token for Válido é guardo no state
+
 import React, { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
@@ -11,11 +14,11 @@ export const UserProvider = (props) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + token,
+          "Authorization": "Bearer " + token, // o header necessário para a autorização. Mais tarde teremos de separa o token do Bearer no backend
         },
       };
 
-      const response = await fetch("/api/me", requestOptions);
+      const response = await fetch("/api/me", requestOptions); 
 
       if (!response.ok) {
         setToken(null);

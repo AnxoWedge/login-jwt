@@ -1,3 +1,5 @@
+//Formulário de Login
+
 import React, { useState, useContext } from "react";
 
 import ErrorMessage from "./ErrorMessage";
@@ -7,6 +9,7 @@ import { UserContext } from "../context/UserContext";
 import "./../css/forms.css";
 
 const Login = () => {
+  // State com React Hooks para o processamento dos dados
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -17,13 +20,13 @@ const Login = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({email: email, password: password }),
+      body: JSON.stringify({email: email, password: password }),// tratamento do JSON para o backend 
     };
 
-    const response = await fetch("/api/login", requestOptions);
+    const response = await fetch("/api/login", requestOptions);// Envio dos dados para o back end 
     const data = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok) { // se existir um erro 
       setErrorMessage(data.detail);
       setErrorMessageColor(true)
     } else {
@@ -31,7 +34,7 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { // Função de submit
     e.preventDefault();
     submitLogin();
   };

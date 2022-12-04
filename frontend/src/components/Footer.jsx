@@ -1,10 +1,11 @@
+// Tanto o header como o footer São quase meramente "dumb" não tem state e apenas servem para estilos.
 import React from "react";
 
 
 //CSS
 import "./../css/footer.css"
 
-const Header = () => {
+const Footer = () => {
   return (
   <>
     <div className="footer bg-colour">
@@ -17,4 +18,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Footer;
