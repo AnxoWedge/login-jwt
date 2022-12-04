@@ -1,0 +1,26 @@
+.footer{
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.footer.bg-colour{
+    box-shadow: 0 0em 1.5em .1em rgba(58, 255, 255, 0.3),0 0 0 1px rgba(10,10,10,.02);
+    background-color: transparent;
+    padding: 0;
+}
+
+.copy{
+    color: #fff;
+}
+
+
+

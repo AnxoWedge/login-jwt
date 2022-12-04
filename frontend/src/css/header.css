@@ -1,0 +1,65 @@
+.header{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding: 1em 0.5em 0.125em 0.5em;
+    
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.header .logo{
+    width: 250px;
+}
+
+
+.header .logo img{
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+
+
+.socials li,
+.contacts{
+  margin: 1em 1em;
+  font-size: 1.3em;
+  background: radial-gradient(214.37% 214.37% at 46.63% 0%, #b38b20 0.31%, #2069d6 52.01%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.socials{
+  display: flex;
+  flex-flow: row nowrap;
+
+}
+
+.header svg *{
+color: #fff;
+}
+.radialStop1{
+  stop-color: #282828;
+}
+.radialStop2{
+  stop-color: #2069d6;
+}
+.header svg path {
+  fill: url(#radial);
+}
+
+.header>svg{
+    position: absolute;
+}
+
+.button-box{
+    padding: 1em 2em;
+}
