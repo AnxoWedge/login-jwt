@@ -4,10 +4,11 @@
 
 ### pip install -r requirements.txt
 
-Basta iniciar o comando normal do flask:
+Para inciar o servidor sem problemas, e com SSL, terás de utilizar o python da seguinte maneira:
 
-### flask run
+### python app.py
 
+Com o tipico "flask run" ele não irá reconhecer nem o verify.py como também o SSL. Logo não daria para fazer chamadas com HTTPS
 
 ## Base de dados
 Caso tenhas feito o clone via github e não esteja a criar a base de dados. será necessário a criação manual da mesma: 

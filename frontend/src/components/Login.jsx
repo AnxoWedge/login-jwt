@@ -13,7 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [, setErrorMessageColor] = useState("");
+  const [, setError] = useState(UserContext);
   const [, setToken] = useContext(UserContext);
 
   const submitLogin = async () => {
@@ -27,10 +27,11 @@ const Login = () => {
     const data = await response.json();
 
     if (!response.ok) { // se existir um erro 
-      setErrorMessage(data.detail);
-      setErrorMessageColor(true)
+      setErrorMessage(data.message);
+      setError("error")
     } else {
       setToken(data.token);
+      setError("success")
     }
   };
 

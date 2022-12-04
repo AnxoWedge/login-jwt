@@ -1,6 +1,6 @@
 // Realizado por: Ângelo Cunha 20202537
 // App.jsx é o primeiro compoennete a ser executado e mostrado ao publico. este será o componente Central que conectará as diferentes secções do site
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 //importar os componentes
 import Register from "./components/Register";
@@ -18,7 +18,7 @@ const App = () => {
   // React Hooks -> Criação de váriaveis e função para o uso do state mais flexivel 
   const [message, setMessage] = useState("");
   const [token] = useContext(UserContext);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error] = useState(UserContext);
   const [background, setBackground] = useState("");
 
   const getWelcomeMessage = async () => {
@@ -38,30 +38,29 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect((error) => {
     getWelcomeMessage();
-  }, []);
+    bgChange(error)
+  }, [error]);
 
-  // const bgChange = useCallback(()=>{
-  //     setErrorMessage(prevError => !prevError)
-  //   },[])
-  //   if(errorMessage){
-  //     setBackground("bg error")
-  //   }
-  //   else if(localStorage.getItem("apiToken")!== "null"){
-  //     setBackground("bg success")
-  //   }
-  //   else{
-  //     console.log(errorMessage)
-  //     setBackground("bg")
-  //   }
-
+  const bgChange = (error)=>{
+    if(error==="error"){
+      console.log(error)
+      setBackground("columns bg error")
+    }
+    else if(error==="success"){
+      setBackground("columns bg success")
+    }
+    else{
+      setBackground("columns bg")
+    }
+  }
 
   //render do JSX ( HTML no Javascript)
   return (
     <>
       <Header title={message} />
-      <div className="columns bg">
+      <div className={background}>
         <div className="column"></div>
         <div className="column m-5 is-two-thirds">
           {token==="null" ? (

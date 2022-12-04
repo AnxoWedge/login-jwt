@@ -1,12 +1,13 @@
 # BACKEND Trabalho 1 
 # Realizado por Ângelo Cunha Nº20202537 GSC2020 3ºano
 
+# !!! Correr com python app.py em vez de flask run
 
 # Imports Necessários para inicializar este Código
 from flask import Flask, request, jsonify, make_response, escape 
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS,cross_origin# Como o frontend não está integrado com o flask è necessário chamar funções de segurança CORS
-from . import verify #Modulo importado do verify.py na mesma pasya
+from verify import geraHash, verificaPalavraPasse #Modulo importado do verify.py na mesma pasya
 import os 
 import uuid
 import jwt
@@ -85,7 +86,7 @@ def signup_user():
     dataEmail=escape(data['email'])
     dataPass=escape(data['password'])
 
-    hashed_password = verify.geraHash(dataPass)# Hash à passowrd. receberemos um tuple com o salt e o hash.
+    hashed_password = geraHash(dataPass)# Hash à passowrd. receberemos um tuple com o salt e o hash.
  
     new_user = Users(public_id=str(uuid.uuid4()), name=dataName,email=dataEmail, password=str(hashed_password)) #Damos um id publico, e passamos as variáveis. #conversão de tuple em string para evitar erros
     db.session.add(new_user)  
@@ -103,20 +104,20 @@ def login_user():
 
 
     if not auth or not authEmail or not authPass:  # Caso não exista nada ele passa um error 401 UNAUTHORIZED 
-        return make_response('could not verify', 401, {'Authentication': 'login required"'})    
+        return make_response(jsonify({"message": "We couldn't find your email or password. Please make sure they are correct. :)", "severity": "danger"}),  401, {'Authentication': '"login required"'})  
     
     user = Users.query.filter_by(email=authEmail).first()  
     if user:
         convertPass= eval(user.password) #Como temos o nosso tuple em string temos de reconverter 
     else:
-        return make_response('This user does not exist', 401, {'Authentication': 'login required"'})# se não for encontrado um utilizador ERRO 
+        return make_response(jsonify({"message": "We couldn't find your email or password. Please make sure they are correct. :)", "severity": "danger"}),  401, {'Authentication': '"login required"'})# se não for encontrado um utilizador ERRO 
 
-    if verify.verificaPalavraPasse(convertPass[0], convertPass[1], authPass): #verificação da pass com o salt, o hash e a password inserida resperivamente.
+    if verificaPalavraPasse(convertPass[0], convertPass[1], authPass): #verificação da pass com o salt, o hash e a password inserida resperivamente.
         #aqui é criado o token para ser enviado. o token é criado usando o id publico , uma data de expiração e a secret key. Assim temos uma sessão temporária onde conseguimos identificar de quem é o token.
         token = jwt.encode({'public_id' : user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=45)}, app.config['SECRET_KEY'], "HS256") 
         return jsonify({'token' : token}) 
 
-    return make_response('could not verify',  401, {'Authentication': '"login required"'})
+    return make_response(jsonify({"message": "We couldn't find your email or password. Please make sure they are correct. :)", "severity": "danger"}),  401, {'Authentication': '"login required"'})
 
 
 @app.route('/api/me', methods=['GET']) #Depois de feito o login, este Endpoint verifica de continuamos com a sessão válida.
@@ -124,7 +125,7 @@ def login_user():
 def check(self):
     return jsonify({'check' : True}) 
 
-
+#Devido ao SSL deve-se correr com python app.py
 if  __name__ == '__main__':
     app.run(debug=True,ssl_context=('localhost.crt', 'localhost.key')) #start com o SSL ligado
     init_db()  

@@ -7,6 +7,7 @@ export const UserContext = createContext();
 
 export const UserProvider = (props) => {
   const [token, setToken] = useState(localStorage.getItem("apiToken"));
+  const [error, setError] = useState("normal");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -29,7 +30,7 @@ export const UserProvider = (props) => {
   }, [token]);
 
   return (
-    <UserContext.Provider value={[token, setToken]}>
+    <UserContext.Provider value={[token, setToken, error, setError]}>
       {props.children}
     </UserContext.Provider>
   );

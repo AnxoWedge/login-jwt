@@ -16,7 +16,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmationPassword, setConfirmationPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [, setErrorMessageColor] = useState("");
+  const [, setError] = useState(UserContext);
   const [, setToken] = useContext(UserContext);
 
   const submitRegistration = async () => {
@@ -31,9 +31,10 @@ const Register = () => {
 
     if (!response.ok) { // verificar se houve erro 
       setErrorMessage(data.detail);
-      setErrorMessageColor(true)
+      setError("error")
     } else {
       setToken(data.access_token); // Receber token em caso de sucesso 
+      setError("success")
     }
   };
 
