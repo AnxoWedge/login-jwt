@@ -4,6 +4,9 @@ import React, { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
 
+import ProductList from "./ProductList";
+
+
 const Starter = ({ title }) => {
   const [token, setToken] = useContext(UserContext);
 
@@ -20,6 +23,7 @@ const Starter = ({ title }) => {
           Logout
         </button>
       )}
+      <ProductList/>
     </div>
   );
 };

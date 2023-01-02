@@ -1,0 +1,184 @@
+/* Basic Style */
+    #project .container {
+      display: block;
+      max-width: 900px;
+      margin: 100px auto 0;
+    }
+    #project ul {
+      margin: 0;
+      padding: 0;
+    }
+    #project li{
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+    }
+  
+    @media ( max-width: 400px){
+        #project li{
+        grid-template-columns: repeat(4,1fr);
+      }
+    }
+  
+    #project li,#project  h3 {
+      clear:both;
+      list-style:none;
+    }
+  
+    #project input,#project  button {
+      outline: none;
+    }
+  
+    #project button {
+      background: none;
+      border: 0px;
+      color: #888;
+      font-size: 15px;
+      width: 60px;
+      margin: 10px 0 0;
+      font-family: Roboto, sans-serif;
+      cursor: pointer;
+    }
+    #project button:hover {
+      color: #333;
+    }
+    /* Heading */
+    h3.shop-cat{
+      padding: 10px;
+      background-color: #10c4ca;
+      color: #fff;
+      border-radius: 5px;
+      border-bottom: 2px solid #ddd;
+    }
+    .add-product{
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+    }
+    .add-product label{
+      flex: 0 0 30%;
+      text-align: center;
+      margin: 10px 5px;
+      padding: 5px;
+      border-bottom: 2px solid #10c4ca;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    .add-product > input,
+    .add-product > button{
+      flex: 0 0 50%;
+    }
+  
+    .add-product > button{
+      background-color: #10c4ca;
+      color: #fff;
+      font-size: 1.2em;
+      font-weight: bold;
+      width: 120px;
+      padding: 5px 10px;
+      margin: 1em  auto;
+      border-radius: 15px;
+      transition: 0.3s all;
+    }
+  
+    .add-product > button:hover{
+      background-color: #10adb3;
+      color: #fff;
+    }
+  
+    #project input[type="text"] {
+      height: 20px;
+      padding: 10px;
+      margin: 0;
+      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: 6px;
+      font-size: 20px;
+      font-family: Roboto, sans-serif;
+      line-height: 20px;
+      color: #888;
+    }
+    #project input[type="text"]:focus {
+      color: #333;
+    }
+    
+    /* New Task */
+    #project label[for='new-task'] {
+      display: block;
+      margin: 0 0 20px;
+    }
+    input#new-task {
+      float: left;
+      width: 318px;
+    }
+    p > button:hover {
+      color: #10c4ca;
+    }
+    
+    /* items da lista */
+    #project li {
+      overflow: hidden;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+      transition: 0.3s all;
+    }
+    #project li:hover{
+      background-color: #ddd;
+    }
+  
+  
+  
+    #project li > input[type="checkbox"] {
+      margin: 13px 10px;
+      position: relative;
+      width: 20px;
+    }
+    #project li > label {
+      font-size: 18px;
+      line-height: 40px;
+      width: 200px;
+      padding: 0 0 0 11px;
+    }
+  @media (max-width: 400px) {
+    #project li > label{
+      width: initial;
+      max-width: 230px;
+    }
+    
+  }
+  
+  #project li >  input[type="text"] {
+      width: 226px;
+    }
+    #project li > .delete:hover {
+      color: #c30000;
+    }
+    
+    /* Completed */
+    #completed-tasks label {
+      text-decoration: line-through;
+      color: #888;
+    }
+    
+    /* Edit Task */
+    #project ul li input[type=text] {
+      display:none;
+    }
+    
+    #project ul li.editMode input[type=text] {
+      display:block;
+    }
+    
+    #project ul li.editMode label {
+      display:none;
+    }
+  
+    .listas{
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-around;
+    }
+    .listas .pc_container{
+      width: 400px;
+      max-width: 400px;
+    }
+ 
