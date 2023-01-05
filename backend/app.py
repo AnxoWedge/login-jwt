@@ -38,6 +38,14 @@ class Users(db.Model):
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
 
+# Define the shopping list model
+class ShoppingList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String)
+    item = db.Column(db.String)
+    qty = db.Column(db.Integer)
+    completed = db.Column(db.Boolean, default=False, nullable=False)
+
 # Função para a execução da inicialização 
 def init_db():
     with app.app_context():
@@ -124,6 +132,73 @@ def login_user():
 @token_required #Login required
 def check(self):
     return jsonify({'check' : True}) 
+
+
+
+@app.route('/api/items', methods=['GET', 'POST'])
+def items():
+    #Quando houver a receção do Token, este virá nos Headers da ligação API. Deverá receber um Header chamado "Authorization" com o valor "Bearer examplecode123".
+    #Para obtermos o token temose de separar a string deste header
+    if 'Authorization' in request.headers: 
+        authHandle= request.headers['Authorization'].split(' ') 
+        jwt_token = authHandle[1] #['Bearer',"examplecode123"]
+    print(jwt_token)
+    # Decode the JWT using the secret key
+    data = jwt.decode(jwt_token, app.config['SECRET_KEY'], algorithms=['HS256'])
+
+    # The "sub" claim of the payload contains the identity of the user
+    username = Users.query.filter_by(public_id=data['public_id']).first().name
+
+    if request.method == 'POST':
+        # Get the item to add from the request
+        data = request.get_json()
+
+        # Add the item to the database
+        new_item = ShoppingList(username=username, item=data['item'], qty=data['quantity'])
+        db.session.add(new_item)
+        db.session.commit()
+
+        # Return the updated list of items
+        items = ShoppingList.query.filter_by(username=username)
+        return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
+    else:
+        # Get the list of items from the database
+        print(username)
+        items = ShoppingList.query.filter_by(username=username)
+        return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
+
+@app.route('/api/items/<int:index>', methods=['PUT', 'DELETE'])
+def item(index):
+    #Quando houver a receção do Token, este virá nos Headers da ligação API. Deverá receber um Header chamado "Authorization" com o valor "Bearer examplecode123".
+    #Para obtermos o token temose de separar a string deste header
+    if 'Authorization' in request.headers: 
+        authHandle= request.headers['Authorization'].split(' ') 
+        jwt_token = authHandle[1] #['Bearer',"examplecode123"]
+
+    # Decode the JWT using the secret key
+    data = jwt.decode(jwt_token, app.config['SECRET_KEY'], algorithms=['HS256'])
+
+    # The "sub" claim of the payload contains the identity of the user
+    username = Users.query.filter_by(public_id=data['public_id']).first().name
+
+    item = ShoppingList.query.filter_by(username=username)[index]
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        if 'item' in data : item.name = data['item']
+        if 'quantity' in data : item.qty = data['quantity']
+        if 'completed' in data : item.completed = data['completed']
+        print(item)
+        db.session.commit()
+
+        items = ShoppingList.query.filter_by(username=username)
+        return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
+    else:
+        db.session.delete(item)
+        db.session.commit()
+
+        items = ShoppingList.query.filter_by(username=username)
+        return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
 
 #Devido ao SSL deve-se correr com python app.py
 if  __name__ == '__main__':

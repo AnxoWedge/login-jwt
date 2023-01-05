@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './../css/productlist.css'
 
-import EditItem from './EditItem';
 import Item from './Item';
+import { UserContext } from "../context/UserContext";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [qtyValue, setQtyValue] = useState('');
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [token,] = useContext(UserContext);
+
+  useEffect(() => {
+    // Make a GET request to the API to get the list of items
+    fetch('/api/items', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setProducts(result.items);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+  }, []); // The empty array ensures that this effect only runs once
 
   const addProduct = () => {
     let productExists = false;
@@ -21,74 +44,146 @@ function ProductList() {
     }
     // If the product does not exist, add it to the list
     if (!productExists) {
-      const newProduct = { name: inputValue, qty: qtyValue, checked: false };
-      setProducts([...products, newProduct]);
+      // Make a POST request to the API to add a new item
+      fetch('/api/items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ item: inputValue, quantity: qtyValue }),
+      })
+        .then(res => res.json())
+        .then(
+          (result) => {
+            // Update the list of items in the component's state
+            setProducts(result.items);
+          },
+          (error) => {
+            console.error(error);
+          }
+        )
     }
   
     setInputValue('');
     setQtyValue('');
   }
 
-  const productDone = (index) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].checked = !updatedProducts[index].checked;
-    setProducts(updatedProducts);
+  const productDone = (index, isChecked) => {
+  // Make a PUT request to the API to update the item's "completed" status
+  fetch(`/api/items/${index}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ completed: isChecked }),
+  })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        // Update the list of items in the component's state
+        setProducts(result.items);
+      },
+      (error) => {
+        console.error(error);
+      }
+    )
   }
 
-  const editProduct = (index, newName) => {
-        // Make a copy of the to-buy list
-        const newToBuyList = [...products];
-        // Update the product at the given index
-        newToBuyList[index].name = newName;
-        // Update the to-buy list state
-        setProducts(newToBuyList);
+  const editProduct = (index, newItem, newQuantity) => {
+    // Make a PUT request to the API to update the item
+    fetch(`/api/items/${index}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ item: newItem, quantity: newQuantity }),
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          // Update the list of items in the component's state
+          setProducts(result.items);
+        },
+        (error) => {
+          console.error(error);
+        }
+      )
   }
 
   const deleteProduct = (index) => {
-        // Make a copy of the to-buy list
-        const newToBuyList = [...products];
-        // Remove the product at the given index
-        newToBuyList.splice(index, 1);
-        // Update the to-buy list state
-        setProducts(newToBuyList);
-  }
+  // Make a DELETE request to the API to delete an item
+  fetch(`/api/items/${index}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        // Update the list of items in the component's state
+        setProducts(result.items);
+      },
+      (error) => {
+        console.error(error);
+      }
+    )
+}
 
-  return (
-    <div className="container" id="project">
-      <p className="add-product">
-        <label htmlFor="new-product">Adicionar Produto</label>
-        <input id="new-product" type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-        <input id="new-product-qty" type="number" value={qtyValue} onChange={(e) => setQtyValue(e.target.value)} />
-        <button onClick={addProduct}>Adicionar</button>
-      </p>
-      <div className="listas">
-        <div className="pc_container">
-          <h3 className="shop-cat">Por comprar</h3>
-          <ul id="por-comprar">
-          {products.map((product, index) => (
-             product.checked ? "" :
-<Item />
-            ))}
-          </ul>
-        </div>
-        <div className="pc_container">
-        <h3 className="shop-cat">Comprado</h3>
-          <ul id="cesto">
-            {products.map((product, index) => (
-             product.checked ? 
-              <li key={product.name}>
-                <input type="checkBox" checked={product.checked} onChange={() => productDone(index)} />
-                <label>{product.name}</label>
-                <input type="text" />
-                <label>{product.qty}</label>
-                <input type="number" />
-                <button onClick={() => editProduct(index)}>Editar</button>
-                <button onClick={() => deleteProduct(index)}>Lixo</button>
-              </li> 
-            : "" ))}
-          </ul>
+  if (error) {
+    return <div className='error'>Error: Your key has been expired, please logout and login again</div>;
+  } else if (!isLoaded) {
+    return <div className='loading'>Loading...</div>;
+  } else {
+    let itemInput, quantityInput;
+    return (
+      <div className="container" id="project">
+        <form  className="add-product" onSubmit={e => {
+          e.preventDefault();
+          addProduct(itemInput.value, quantityInput.value);
+        }}>
+          <input id="new-product" ref={node => itemInput = node} onChange={(e)=>setInputValue(e.target.value)} />
+          <input id="new-product-qty" type="number" ref={node => quantityInput = node} onChange={(e)=>setQtyValue(e.target.value)}/>
+          <button type="submit">Add</button>
+        </form>
+        <div className="listas">
+          <div className="pc_container">
+            <h3 className="shop-cat">Por comprar</h3>
+            <ul id="por-comprar">
+            {products.map((item, index) => (
+              item.completed ? "" :
+                <Item
+                  key={index}
+                  item={item}
+                  index={index}
+                  productDone={productDone}
+                  editProduct={editProduct}
+                  deleteProduct={deleteProduct}
+                />
+              ))}
+            </ul>
           </div>
-      </div>
-    </div> )
+          <div className="pc_container">
+          <h3 className="shop-cat">Comprado</h3>
+            <ul id="cesto">
+              {products.map((item, index) => (
+              item.completed ? 
+                <Item
+                  key={index}
+                  item={item}
+                  index={index}
+                  productDone={productDone}
+                  editProduct={editProduct}
+                  deleteProduct={deleteProduct}
+                />
+              : "" ))}
+            </ul>
+            </div>
+        </div>
+      </div> )
+  }
 }
 export default ProductList;

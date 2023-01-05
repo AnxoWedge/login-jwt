@@ -9,13 +9,13 @@
       padding: 0;
     }
     #project li{
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
+      display: flex;
+      flex-flow: row nowrap;
     }
   
     @media ( max-width: 400px){
         #project li{
-        grid-template-columns: repeat(4,1fr);
+        flex-flow: row nowrap;
       }
     }
   
@@ -116,6 +116,7 @@
     
     /* items da lista */
     #project li {
+      background-color: #eee;
       overflow: hidden;
       padding: 20px 0;
       border-bottom: 1px solid #eee;
