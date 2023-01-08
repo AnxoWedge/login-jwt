@@ -1,5 +1,8 @@
-# BACKEND Trabalho 1 
-# Realizado por Ângelo Cunha Nº20202537 GSC2020 3ºano
+# BACKEND Trabalho 2 Em grupo  
+# Realizado por 
+# Ângelo Cunha Nº20202537 GSC2020 3ºano
+# José Gonçalves Nº20202462 GSC2020 3ºano
+# Luís Fernandes Nº20202586 GSC2020 3ºano
 
 # !!! Correr com python app.py em vez de flask run
 
@@ -38,7 +41,7 @@ class Users(db.Model):
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
 
-# Define the shopping list model
+# Schema para os Items
 class ShoppingList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String)
@@ -142,27 +145,25 @@ def items():
     if 'Authorization' in request.headers: 
         authHandle= request.headers['Authorization'].split(' ') 
         jwt_token = authHandle[1] #['Bearer',"examplecode123"]
-    print(jwt_token)
-    # Decode the JWT using the secret key
+    # O bloco de código acima verifica se há um cabeçalho 'Authorization' na solicitação HTTP e, se houver, separa o token JWT que está presente nesse cabeçalho.
+    # Em seguida, o token JWT é decodificado usando a chave secreta da aplicação 
     data = jwt.decode(jwt_token, app.config['SECRET_KEY'], algorithms=['HS256'])
 
-    # The "sub" claim of the payload contains the identity of the user
+    # O nome de utilizador do utilizador associado ao token é obtido a partir do banco de dados usando o public_id contido no token decodificado. 
     username = Users.query.filter_by(public_id=data['public_id']).first().name
 
+    # Se a solicitação for um HTTP POST, os dados enviados na solicitação são lidos e, se presentes, atualizam os campos item, qty e completed do item de compras. Depois, as alterações são salvas no banco de dados.
     if request.method == 'POST':
-        # Get the item to add from the request
         data = request.get_json()
-
-        # Add the item to the database
         new_item = ShoppingList(username=username, item=data['item'], qty=data['quantity'])
         db.session.add(new_item)
         db.session.commit()
-
-        # Return the updated list of items
+        # O item é gravado no banco de dados.
+        # Todos os itens de compras do utilizador são retornados como resposta da API.
         items = ShoppingList.query.filter_by(username=username)
         return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
     else:
-        # Get the list of items from the database
+
         print(username)
         items = ShoppingList.query.filter_by(username=username)
         return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
@@ -174,29 +175,31 @@ def item(index):
     if 'Authorization' in request.headers: 
         authHandle= request.headers['Authorization'].split(' ') 
         jwt_token = authHandle[1] #['Bearer',"examplecode123"]
-
-    # Decode the JWT using the secret key
+    # O bloco de código acima verifica se há um cabeçalho 'Authorization' na solicitação HTTP e, se houver, separa o token JWT que está presente nesse cabeçalho.
+    # Em seguida, o token JWT é decodificado usando a chave secreta da aplicação 
     data = jwt.decode(jwt_token, app.config['SECRET_KEY'], algorithms=['HS256'])
 
-    # The "sub" claim of the payload contains the identity of the user
+    # O nome de utilizador do utilizador associado ao token é obtido a partir do banco de dados usando o public_id contido no token decodificado. 
     username = Users.query.filter_by(public_id=data['public_id']).first().name
-
+    # O item de compras correspondente ao índice dado é recuperado do banco de dados usando o nome de utilizador obtido anteriormente.
     item = ShoppingList.query.filter_by(username=username)[index]
-
+    # Se a solicitação for um HTTP PUT, os dados enviados na solicitação são lidos e, se presentes, atualizam os campos item, qty e completed do item de compras. Depois, as alterações são salvas no banco de dados.
     if request.method == 'PUT':
         data = request.get_json()
-        if 'item' in data : item.name = data['item']
+        if 'item' in data : item.item = data['item']
         if 'quantity' in data : item.qty = data['quantity']
         if 'completed' in data : item.completed = data['completed']
-        print(item)
+        # As alterações são salvas no banco de dados.
         db.session.commit()
+        # Todos os itens de compras do utilizador são retornados como resposta da API.
 
         items = ShoppingList.query.filter_by(username=username)
         return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
     else:
         db.session.delete(item)
         db.session.commit()
-
+        # As alterações são salvas no banco de dados.
+        # Todos os itens de compras do utilizador são retornados como resposta da API.
         items = ShoppingList.query.filter_by(username=username)
         return jsonify({'items': [{'username': item.username, 'name': item.item, 'quantity': item.qty, 'completed': item.completed } for item in items]}), 200
 

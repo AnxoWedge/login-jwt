@@ -1,10 +1,6 @@
-.footer{
-    height: 60px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
+/*Este é  o ficheiro css correspodente à estilização do Footer */
 
+.footer{
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
@@ -19,7 +15,22 @@
 }
 
 .copy{
+    display: flex;
+    flex-flow: column;
+}
+.copy span{
+    text-align: center;
     color: #fff;
+}
+
+@media (min-width:768px) {
+    .footer{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        
+    }
 }
 
 

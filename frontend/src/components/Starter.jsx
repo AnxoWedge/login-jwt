@@ -23,7 +23,7 @@ const Starter = ({ title }) => {
           Logout
         </button>
       )}
-      <ProductList/>
+       <ProductList/> {/* Adiciona-se a product list para começar a chamada de items após o login */}
     </div>
   );
 };

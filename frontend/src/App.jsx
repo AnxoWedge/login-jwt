@@ -1,4 +1,4 @@
-// Realizado por: Ângelo Cunha 20202537
+// Realizado por: Ângelo Cunha 20202537J, José Gonçalves 20202462, Luís Fernandes 20202586
 // App.jsx é o primeiro compoennete a ser executado e mostrado ao publico. este será o componente Central que conectará as diferentes secções do site
 import React, { useContext, useEffect, useState } from "react";
 
@@ -52,17 +52,17 @@ const App = () => {
       setBackground("columns bg success")
     }
     else{
-      setBackground("columns bg")
+      setBackground("columns login_reg")
     }
   }
 
   //render do JSX ( HTML no Javascript)
   return (
-    <>
+    <section className="bg">
       <Header title={message} />
       <div className={background}>
         <div className="column"></div>
-        <div className="column m-5 is-two-thirds">
+        <div className="column is-mobile is-two-thirds">
           {token==="null" ? (
             <div className="columns">
               <Register  /> <Login  />
@@ -74,7 +74,7 @@ const App = () => {
         <div className="column"></div>
       </div>
       <Footer/>
-    </>
+    </section>
   );
 };
 

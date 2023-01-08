@@ -21,7 +21,7 @@ library.add( fab, faGithub,faInstagram, faLinkedin,faYoutube)
 
 const Header = ({ title }) => {
   const [token, setToken] = useContext(UserContext);
-
+  // Remove token e faz logout do utilizador
   const handleLogout = () => {
     setToken("null");
     localStorage.removeItem("apiToken");

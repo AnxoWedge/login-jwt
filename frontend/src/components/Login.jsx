@@ -35,7 +35,7 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (e) => { // Função de submit
+  const handleSubmit = (e) => { // Função de  para fazer Login
     e.preventDefault();
     submitLogin();
   };

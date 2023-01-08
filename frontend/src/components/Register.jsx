@@ -46,7 +46,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmationPassword && checkPassword(password)) { // comfirmação e Submit
+    if (password === confirmationPassword && checkPassword(password)) { // confirmação e Submit
       submitRegistration();
     } else {
       setErrorMessage(

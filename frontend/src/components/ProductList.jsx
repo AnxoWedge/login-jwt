@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './../css/productlist.css'
 
-import Item from './Item';
+import Item from './Item'; // Compoenente "Item.jsx"
 import { UserContext } from "../context/UserContext";
 
 function ProductList() {
@@ -10,10 +10,10 @@ function ProductList() {
   const [qtyValue, setQtyValue] = useState('');
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [token,] = useContext(UserContext);
+  const [token, setToken] = useContext(UserContext);
 
   useEffect(() => {
-    // Make a GET request to the API to get the list of items
+    // Faz uma solicitação GET à API para obter a lista de itens.
     fetch('/api/items', {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -30,21 +30,22 @@ function ProductList() {
           setError(error);
         }
       )
-  }, []); // The empty array ensures that this effect only runs once
+  }, []); // O array vazio garante que este efeito só execute uma vez
 
   const addProduct = () => {
     let productExists = false;
-    // Check if the product already exists in the list
+    // Verifique se o produto já existe na lista
     for (const product of products) {
       if (product.name === inputValue) {
-        product.qty += qtyValue;
+        product.quantity = Number(product.quantity) + Number(qtyValue);
         productExists = true;
+        editProduct(products.indexOf(product), inputValue, product.quantity)
         break;
       }
     }
-    // If the product does not exist, add it to the list
+    // Se o produto não existir, adicione-o à lista
     if (!productExists) {
-      // Make a POST request to the API to add a new item
+      // Faz uma solicitação POST à API para adicionar um novo item.
       fetch('/api/items', {
         method: 'POST',
         headers: {
@@ -56,7 +57,7 @@ function ProductList() {
         .then(res => res.json())
         .then(
           (result) => {
-            // Update the list of items in the component's state
+            // Atualiza a lista de itens no estado do componente.
             setProducts(result.items);
           },
           (error) => {
@@ -70,7 +71,7 @@ function ProductList() {
   }
 
   const productDone = (index, isChecked) => {
-  // Make a PUT request to the API to update the item's "completed" status
+  // Faz uma solicitação PUT à API para atualizar o status "completado" do item.
   fetch(`/api/items/${index}`, {
     method: 'PUT',
     headers: {
@@ -82,7 +83,7 @@ function ProductList() {
     .then(res => res.json())
     .then(
       (result) => {
-        // Update the list of items in the component's state
+        // Atualiza a lista de itens no estado do componente.
         setProducts(result.items);
       },
       (error) => {
@@ -92,7 +93,8 @@ function ProductList() {
   }
 
   const editProduct = (index, newItem, newQuantity) => {
-    // Make a PUT request to the API to update the item
+    // Faz uma solicitação PUT à API para atualizar o item.
+    console.log(newItem,newQuantity)
     fetch(`/api/items/${index}`, {
       method: 'PUT',
       headers: {
@@ -104,7 +106,7 @@ function ProductList() {
       .then(res => res.json())
       .then(
         (result) => {
-          // Update the list of items in the component's state
+          // Atualiza a lista de itens no estado do componente.
           setProducts(result.items);
         },
         (error) => {
@@ -114,7 +116,7 @@ function ProductList() {
   }
 
   const deleteProduct = (index) => {
-  // Make a DELETE request to the API to delete an item
+  // Faz uma solicitação DELETE à API para excluir um item.
   fetch(`/api/items/${index}`, {
     method: 'DELETE',
     headers: {
@@ -124,7 +126,7 @@ function ProductList() {
     .then(res => res.json())
     .then(
       (result) => {
-        // Update the list of items in the component's state
+        // Atualizar a lista de itens no estado do componente
         setProducts(result.items);
       },
       (error) => {
@@ -133,7 +135,16 @@ function ProductList() {
     )
 }
 
+
+//Função de Logout, Limpa o token e desliga o utilizador do sistema.
+  const handleLogout = () => {
+    setToken("null");
+    localStorage.removeItem("apiToken");
+  };
+
+
   if (error) {
+    handleLogout() // se não encontrar um token válido, faz logout 
     return <div className='error'>Error: Your key has been expired, please logout and login again</div>;
   } else if (!isLoaded) {
     return <div className='loading'>Loading...</div>;
@@ -145,8 +156,8 @@ function ProductList() {
           e.preventDefault();
           addProduct(itemInput.value, quantityInput.value);
         }}>
-          <input id="new-product" ref={node => itemInput = node} onChange={(e)=>setInputValue(e.target.value)} />
-          <input id="new-product-qty" type="number" ref={node => quantityInput = node} onChange={(e)=>setQtyValue(e.target.value)}/>
+          <input id="new-product" ref={node => itemInput = node} onChange={(e)=>setInputValue(e.target.value)} value={inputValue} placeholder=" Insere os seu produto..."/>
+          <input id="new-product-qty" type="number" ref={node => quantityInput = node} onChange={(e)=>setQtyValue(e.target.value)} value={qtyValue} placeholder="1"/>
           <button type="submit">Add</button>
         </form>
         <div className="listas">

@@ -1,27 +1,36 @@
-# React Flask API With Register and login 
+# Shopping List with React Flask API With Register and login 
 
 This is a project made With flask backend and React frontend. Its aim is to meet the requirements for a College project but also Test and increase my skills in this area. 
 
-## Contexto do Trabalho: 
+## Contexto do Trabalho:
 
-Objetivo: criar uma página de login e uma página de registo de utilizador funcionais para um sistema web a ser definido (este corresponderá ao trabalho final em dupla). Para este trabalho, todos os seguintes itens são requisitos:
+    O objetivo deste projeto é construir um sistema web completo com frontend em HTML+JS+CSS e backend em flask, utilizando uma base de dados de escolha do grupo (sqlite, mysql, etc). O tema da base de dados é livre, mas o sistema deve incluir um CRUD ou um sistema de visualização de dados de base (apenas R do CRUD) através de tabelas dinâmicas ou gráficos. Além disso, o sistema deve incluir as funcionalidades de login e registo do primeiro trabalho. O grupo deve apresentar oralmente o trabalho no último dia de aula (09/01/2023).
 
-    - Fazer uso do Flask conforme os exercícios práticos feitos em aulas (vide slides de aula);
-    - Utilizar cookies via session do Flask: utilizador deve permanecer logado enquanto uma sessão está aberta;
-    - Página de login é a primeira página que deve aparecer se o utilizador não estiver logado;
-        - Página de login deve conter ligação para registo no sistema (por exemplo, um botão de registo);
-        - Utilizador e palavra-passe devem ser verificados no servidor e o sistema web só pode ser acessado se houver permissão;
-        - Caso utilizador ou palavra-passe não casem com informação no servidor, um aviso deve ser mostrado na página de login;
-        - Fazer uso de HTTPS ao invés de HTTP.
-    - Página de registo deve registar ao menos o nome, o e-mail e a palavra-passe do utilizador;
-        - A palavra-passe pode ser enviada em texto plano. Ao utilizar HTTPS, o texto vai criptografado e, portanto, não há problemas de segurança.
-        - Palavras-passe registadas devem ser armazenadas de forma segura com o uso de hash salt em ficheiro ou base de dados.
-        - O procedimento de geração de hash deve ser implementado pelo aluno e não devem ser utilizadas livrarias/bibliotecas próprias de Python. Isto é, para este propósito, deve-se apenas utilizar livrarias básicas como hashllib, random, string, conforme visto em aula.
+    Requisitos principais:
+
+       - Implementar sistema CRUD ou sistema de visualização de dados de base com tabelas dinâmicas ou gráficos
+       - Utilizar o sistema de login e registo do primeiro trabalho
+       - Utilizar o Flask de acordo com os exercícios práticos realizados em aulas
+       - Utilizar cookies via sessão do Flask para manter o utilizador logado enquanto a sessão estiver aberta
+       - A página de login deve ser a primeira a ser exibida se o utilizador não estiver logado
+       - A página de login deve conter um link para o registo no sistema
+       - O utilizador e senha devem ser verificados no servidor e o acesso ao sistema só deve ser permitido com permissão
+       - Caso o utilizador ou senha não correspondam à informação no servidor, um aviso deve ser exibido na página de login
+       - Fazer uso de HTTPS ao invés de HTTP
+       - A página de registo deve registrar pelo menos o nome, email e senha do utilizador
+       - A senha pode ser enviada em texto plano com o uso de HTTPS, que criptografa o texto
+       - As senhas registradas devem ser armazenadas de forma segura com o uso de hash salt em arquivo ou base de dados
+       - O procedimento de geração de hash deve ser implementado pelo grupo e não deve ser utilizado nenhum pacote próprio de Python, apenas livrarias básicas como hashllib, random e string.
 
 ## Diferenças Implementadas proposta à Professora com aprovação
 
     Com a ambição de criar algo mais além das minhas capacidades, propos à professora algumas mudanças mais avançadas no meu projecto, mas que vai ao encontro aos objetivos pedidos. 
     A minha proposta foi fazer um frontend em React, utilizando O CRA ( create-react-app ) onde este depois se conectava com o servidor flask via endpoints. Para a sessão seria foi utilizado o JWT (JSON Web Token), que proporciona o mesmo objetivo de utilizar sessões para o login. A proposta não faz qualquer outra modificação, e proporciona todos os objetivos para o trabalho. 
+
+## Tema proposta à professora
+
+    Este tema foi proposto à professora baseado num trabalho anteriormente realizado, uma Lista de Compras meramente suportada por HTML, CSS e Javascript. Face à proposta de trabalho, o grupo decidiu melhorar este trabalho anterior, conrrespondendo os requisitos do trabalho e melhorando várias parates gráficas e funcionais, que tenham sido notados no trabalho anterior. 
+    Assim a Shopping List tornou-se uma lista, bastante mais funcional, User-friendly, Responsive, e adaptável às necessidades do utilizador.
 
 ## Problemas e Desafios
 
@@ -31,10 +40,16 @@ Objetivo: criar uma página de login e uma página de registo de utilizador func
 
     - Visualização do frontend - Todo o site poderá ser navegado pelo o localhost:5000 ou https://127.0.0.1:5000 . Caso não dar deixo os passos de como os utilizar através dos Readme.md em cada uma das pastas. 
 
-## Funcionalidade JWT
+## Funcionalidade JWT - Re explicado
 
-    O JSON Web Token é de facto diferente da sessão e cookies dados em aula. No entanto, são processados de forma parecida, e codificados de forma quase igual. Os dois precisam de uma secret key, conseguem perceber o user_id e têm uma data de expiração. No Entanto o JWT é mais fléxivel a mais plataformas e é um token que neste momento está em crescimento também graças à JAMstack. Os Session Cookies, devido ás legislações em produção, como o GDPR, são cada vez menos escolhidos para não haver muitos cookies no site.  
+    O JWT (JSON Web Token) é um padrão aberto que define uma maneira de transmitir informações seguras de forma compacta entre duas partes. Ele é composto por três partes: um cabeçalho, um corpo (payload) e uma assinatura.
+
+    O cabeçalho contém informações sobre como o JWT foi assinado. O corpo (payload) contém as informações que você quer transmitir, como o nome de utilizador ou o ID do utilizador. A assinatura é usada para garantir que o conteúdo do JWT não foi alterado durante a transmissão.
+
+    Para verificar a integridade de um JWT, o receptor verifica a assinatura usando a chave secreta compartilhada. Se a assinatura for válida, o receptor pode confiar nas informações contidas no JWT.
+
+    Um uso comum do JWT é autenticar utilizadors em uma aplicação web. Quando um utilizador faz login com sucesso, o servidor de autenticação emite um JWT contendo informações de identificação do utilizador. O cliente armazena esse JWT e o envia de volta para o servidor em cada solicitação subsequente, permitindo que o servidor saiba que o utilizador foi autenticado. Isso é útil porque o JWT pode ser usado em vez de uma sessão para autenticar o utilizador em todas as solicitações subsequentes, sem precisar armazenar os dados de autenticação no lado do servidor.
 
 ## Não está nada a funcionar? 
 
-    Caso por alguma razão nada estiver a correr como planeado, fico disponível para o plano B. :) É só mandar o email ou dar um toque em aula que ajudarei no que for necessário para por tudo normal.
+    Caso por alguma razão nada estiver a correr como planeado, ficamos disponíveis para o plano B. :) É só mandar o email que ajudaremos no que for necessário para por tudo normal.

@@ -10,7 +10,8 @@ const Footer = () => {
   <>
     <div className="footer bg-colour">
       <div className="copy">
-        GSC &copy; {new Date().getFullYear()} All rights reserved; Developed by Ângelo Cunha 20202537
+        <span>GSC &copy; {new Date().getFullYear()} All rights reserved;</span> 
+        <span>Developed by<br/> Ângelo Cunha = 20202537;<br/> José Gonçalves = 20202462;<br/> Luís Fernandes = 20202586;</span>
       </div>
     </div>
 

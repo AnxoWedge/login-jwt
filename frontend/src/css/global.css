@@ -1,12 +1,8 @@
 /* Pedaços do site estão integrados com a biblioteca de CSS:  Bulma CSS  */
-
+/*Este é  o ficheiro css correspodente à estilização global da aplicação */
 /* Background */
 .bg{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
     background-size: 300% 300%;
     background-image: linear-gradient(
           -45deg, 
@@ -39,6 +35,7 @@
   );     
 }
 
+/* Animação do background */
 
 @keyframes AnimateBG { 
   0%{background-position:0% 50%}
@@ -48,6 +45,10 @@
 
 .columns.bg{
   margin: 0 auto;
+}
+
+.login_reg{
+  margin: 0 2em;
 }
 
 
@@ -64,4 +65,16 @@
 .button.action:hover{
   background-color: #b28b22;
 
+}
+
+
+
+
+@media ( min-width: 768px){
+  .bg{
+    height:100vh;
+  }
+  .login_reg{
+    margin: initial;
+  }
 }

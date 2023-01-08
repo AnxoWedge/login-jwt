@@ -1,4 +1,4 @@
-
+/*Este é  o ficheiro css correspodente à estilização do Forms */
 h1.title,h2,h3,h4,h5,p,span,label.label{
     color:rgb(29, 179, 216)
 }
@@ -22,3 +22,5 @@ h1.title,h2,h3,h4,h5,p,span,label.label{
 .box.bg-colour:hover{
     box-shadow: 0 0em 1.5em .1em rgba(255, 227, 0, 0.3),0 0 0 1px rgba(10,10,10,.02);
 }
+
+

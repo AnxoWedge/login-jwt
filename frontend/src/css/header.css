@@ -1,8 +1,6 @@
+/*Este é  o ficheiro css correspodente à estilização do Header */
+
 .header{
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
     padding: 1em 0.5em 0.125em 0.5em;
     
 
@@ -14,16 +12,8 @@
 }
 
 .header .logo{
-    width: 250px;
+    display: none;
 }
-
-
-.header .logo img{
-    max-width: 100%;
-    object-fit: contain;
-    object-position: center;
-}
-
 
 
 .socials li,
@@ -56,10 +46,31 @@ color: #fff;
   fill: url(#radial);
 }
 
-.header>svg{
-    position: absolute;
+.header .logo_atla{
+    display: none;
 }
 
 .button-box{
     padding: 1em 2em;
 }
+
+.svg-settings{
+  position: absolute;
+  z-index: 0;
+}
+
+/* Este é o breakpoint do site. O header tem um estilo adaptado ao Desktop quando o Wdith do viewport chega aos 768px */
+@media ( min-width:  768px){
+    .header .logo{
+      display: initial;
+      width: 250px;
+  }
+
+
+  .header .logo img{
+      max-width: 100%;
+      object-fit: contain;
+      object-position: center;
+  }
+}
+
